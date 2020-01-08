@@ -1,4 +1,4 @@
-[![Job Service](https://github.com/jax79sg/artyins-classifierservice/raw/master/images/SoftwareArchitecturJobService.jpg)]()
+[![Job Service](https://github.com/jax79sg/artyins-jobservice/raw/master/images/SoftwareArchitectureJobService.jpg)]()
 
 # Job Service For artyins deployment architecture
 This is a submodule for the artyins deployment architecture. Please refer to [main module](https://github.com/jax79sg/artyins) for full build details.
