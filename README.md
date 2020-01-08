@@ -3,13 +3,13 @@
 # Job Service For artyins deployment architecture
 This is a submodule for the artyins deployment architecture. Please refer to [main module](https://github.com/jax79sg/artyins) for full build details.
 
-[![Build Status](https://travis-ci.com/jax79sg/artyins-classifierservice.svg?token=BREzYzgtHGHQp4of21Xp&branch=master)](https://travis-ci.com/jax79sg/artyins-classifierservice)
+[![Build Status](https://travis-ci.com/jax79sg/artyins-jobservice.svg?branch=master)](https://travis-ci.com/jax79sg/artyins-jobservice)
 
 Refer to [Trello Task list](https://trello.com/c/k32yAwNL) for running tasks.
 
 ---
 
-## Table of Contents (Optional)
+## Table of Contents
 
 - [Usage](#Usage)
 - [Virtualenv](#Virtualenv)
@@ -28,7 +28,6 @@ The API call simply calls other APIs to fulfil the above.
 The configuration will point to the URLs of the relevant APIs
 ```python
 class JobConfig():
-    GPU_COUNT = 1
     EXTRACTION_URL='http://ipaddr/extractreport'
     INFERENCE_URL='http://ipaddr/infercontent'
     SAVE_URL='http://ipaddr/savecontent'
