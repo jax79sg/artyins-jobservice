@@ -24,6 +24,10 @@ This is a web API call to start a job. Each job will comprise of 3 actions, name
 - Save the information from above into database
 The API call simply calls other APIs to fulfil the above.
 
+The job service can be called by a HTTP POST call. Primarily on http://webserverip:port/create_job. It expects a json of the following format
+```python
+```
+
 ### config.py
 The configuration will point to the URLs of the relevant APIs
 ```python
