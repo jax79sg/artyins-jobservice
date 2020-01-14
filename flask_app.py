@@ -22,7 +22,10 @@ ROOT_DIR = os.path.abspath("../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 
 # Logging confg
-logging.basicConfig(level=logging.DEBUG, filename="log", filemode="a+",
+logging.basicConfig(level=logging.DEBUG,handlers=[
+        logging.FileHandler("{0}/{1}.log".format(".", "log")),
+        logging.StreamHandler()
+    ] ,
                 format="%(asctime)-15s %(levelname)-8s %(message)s")
 
 ############################################################
@@ -58,8 +61,8 @@ def saveContent(data):
 def mergejson(content1, content2):
     from pandas.io.json import json_normalize
     import pandas as pd
-    c1=json_normalize(data[content1)
-    c2=json_normalize(data[content2)
+    #c1=json_normalize(data[content1)
+    #c2=json_normalize(data[content2)
     merged_inner = pd.merge(left=content1,right=content2, left_on='id', right_on='id')
     return merged_inner.to_json(orient='records')
 
@@ -104,7 +107,8 @@ def create_job_get():
         }
         return jsonify(response), 200
 
-@app.route('/test',methods='GET'])
+@app.route('/test',methods=['GET'])
+def test_get():
     response = {
         'message':'ok'
     }

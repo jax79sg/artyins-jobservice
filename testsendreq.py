@@ -6,12 +6,7 @@ from config import JobConfig
 config = JobConfig()
 
 URL = "http://localhost:9891/test"
-r = requests.post(url = URL, data = "")
-data=r.json()
-print("Data received: ", data["message"])
+r = requests.get(url = URL, data = "")
+print("Data received: ", r)
 
-URL = "http://localhost:9891/create_job"
-r = requests.post(url = URL, json = )
-data = r.json()
-print("Data received: ", data["results"])
 
