@@ -9,6 +9,5 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - gunicorn --bind 0.0.0.0:9898 --daemon --workers 1 wsgi:app
-  - python3 test.py
+  - gunicorn --bind 0.0.0.0:9891 --daemon --workers 1 wsgi:app
   - python3 testsendreq.py
