@@ -85,7 +85,7 @@ def mergejson(content1, content2):
     c1=json_normalize(content1)
     c2=json_normalize(content2)
     merged_inner = pd.merge(left=c1,right=c2, left_on='id', right_on='id')
-    logging.info("Merging complete %s",merged_inner.to_json)
+    logging.info("Merging complete %s",merged_inner.to_json(orient='records'))
     return merged_inner.to_json(orient='records')
 
 def run_create_new_job(data):
@@ -103,7 +103,7 @@ def run_create_new_job(data):
     #vomits [{"filename":"file01.pdf","id":1,"class":"DOCTRINE","section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"class":"DOCTRINE","section":"observation","content":"kfsdfjsfsjhsd"}]}    
 
     #eats above vomit
-    savedContent=saveContent(inferredContent)
+    savedContent=saveContent(mergedresult)
     #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
     #If vomit is "ok", then no probles.
 
