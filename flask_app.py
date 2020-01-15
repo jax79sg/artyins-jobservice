@@ -68,6 +68,7 @@ def mergejson(content1, content2):
 
 def run_create_new_job(data):
     logging.info('Loading data: %s', data)
+    print("Doing something")
     #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
     extractedContent=extractContent(data)
     #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
@@ -96,7 +97,7 @@ app = Flask(__name__)
 
 @app.route('/create_job', methods=['POST'])
 def create_job_get():
-
+    logging.info("Received CREATEJOB call")
     if request.method == 'POST':
         request_json = request.get_json(force=True)
         result = run_create_new_job(request_json)
