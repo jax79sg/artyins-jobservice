@@ -23,7 +23,7 @@ sys.path.append(ROOT_DIR)  # To find local version of the library
 
 # Logging confg
 logging.basicConfig(level=logging.DEBUG,handlers=[
-        logging.FileHandler("{0}/{1}.log".format(".", "log")),
+        logging.FileHandler("{0}/{1}.log".format("/logs", "jobsvc-flaskapp")),
         logging.StreamHandler()
     ] ,
                 format="%(asctime)-15s %(levelname)-8s %(message)s")
@@ -38,10 +38,12 @@ config = JobConfig()
 # Create model object in inference mode.
 
 def extractContent(data):
+    logging.info("Preparing request for extract content")
     filelist=[]
     idcount=1
     for row in data:
-       filelist.append({"filename":row["filename"],"id":idcount})
+       logging.info("ROW is {} with type {}".format(row, type(row)))
+       filelist.append({"filename":row["filename"],"id":str(idcount)})
        idcount=idcount+1
     r = requests.post(url = config.EXTRACTION_URL, json  = json.dumps(filelist))
     results = r.json()
