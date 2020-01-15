@@ -115,15 +115,15 @@ app = Flask(__name__)
 def create_job_get():
     logging.info("Received CREATEJOB call")
     if request.method == 'POST':
-        logger.debug("Getting json info")
+        logging.debug("Getting json info")
         request_json = request.get_json(force=True)
         result = run_create_new_job(request_json)
-        logger.debug("Dumping results back to caller")
+        logging.debug("Dumping results back to caller")
         response_msg = json.dumps(result)
         response = {
             'results': response_msg
         }
-        logger.info("Job call completed")
+        logging.info("Job call completed")
         return jsonify(response), 200
 
 @app.route('/test',methods=['GET'])
