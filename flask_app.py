@@ -65,6 +65,9 @@ def saveContent(data):
 def mergejson(content1, content2):
     from pandas.io.json import json_normalize
     import pandas as pd
+    logging.info("Merging results from Extraction and Inference")
+    logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
+    logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
     #c1=json_normalize(data[content1)
     #c2=json_normalize(data[content2)
     merged_inner = pd.merge(left=content1,right=content2, left_on='id', right_on='id')
