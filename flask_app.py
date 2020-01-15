@@ -60,8 +60,14 @@ def inferContent(data):
     return results['results']
   
 def saveContent(data):
-    r = requests.post(url = config.SAVE_URL, json  = DATA)
+    logging.info("Preparing request for saving")
+    logging.debug("DATA %s TYPE %s",data, type(data))
+    if isinstance(data, str):
+       logging.debug("data is not json dict, manually converting now")
+       data=json.loads(data)
+    r = requests.post(url = config.SAVE_URL, json  = data)
     results = r.json()
+    logging.info("Saving completed")
     return results['results']
  
 def mergejson(content1, content2):
