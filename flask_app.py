@@ -47,14 +47,16 @@ def extractContent(data):
        idcount=idcount+1
     r = requests.post(url = config.EXTRACTION_URL, json  = filelist)
     results = r.json()
+    logging.info("Extraction call completed")
     return results['results']
 
 def inferContent(data):
     logging.info("Preparing request for inference")
-    logging.info("DATA %s  TYPE %s", data, type(data))
+    logging.debug("DATA %s  TYPE %s", data, type(data))
     #Input: {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
     r = requests.post(url = config.INFERENCE_URL, json  = data)
     results = r.json()
+    logging.info("Inference call completed")
     return results['results']
   
 def saveContent(data):
@@ -68,14 +70,21 @@ def mergejson(content1, content2):
     logging.info("Merging results from Extraction and Inference")
     logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
     logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
-    #c1=json_normalize(data[content1)
-    #c2=json_normalize(data[content2)
+    if isinstance(content1,str):
+        logging.warn("Received content is not JSON obj, manually converting")
+        content1 = json.loads(content1)
+    if isinstance(content2, str):
+        logging.warn("Received conetnt is not JSON obj, manually converting")
+        content2 = json.loads(content2)
+    c1=json_normalize(content1)
+    c2=json_normalize(content2)
     merged_inner = pd.merge(left=content1,right=content2, left_on='id', right_on='id')
+    logging.info("Merging complete")
     return merged_inner.to_json(orient='records')
 
 def run_create_new_job(data):
-    logging.info('Loading data: %s', data)
-    print("Doing something")
+    logging.info("Starting job run")
+    logging.debug('Loading data: %s', data)
     #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
     extractedContent=extractContent(data)
     #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
@@ -97,7 +106,7 @@ def run_create_new_job(data):
     # Extract the report filenames that passes, send passed to monitor service who will move filename from processing to succeed
     
     
-    return 0
+    return "ok"
 
 # Instantiate the Node
 app = Flask(__name__)
@@ -106,17 +115,20 @@ app = Flask(__name__)
 def create_job_get():
     logging.info("Received CREATEJOB call")
     if request.method == 'POST':
+        logger.debug("Getting json info")
         request_json = request.get_json(force=True)
         result = run_create_new_job(request_json)
-        
+        logger.debug("Dumping results back to caller")
         response_msg = json.dumps(result)
         response = {
-            'message': response_msg
+            'results': response_msg
         }
+        logger.info("Job call completed")
         return jsonify(response), 200
 
 @app.route('/test',methods=['GET'])
 def test_get():
+    logging.info("Running health test for jobservice")
     response = {
         'message':'ok'
     }
