@@ -78,7 +78,7 @@ def mergejson(content1, content2):
         content2 = json.loads(content2)
     c1=json_normalize(content1)
     c2=json_normalize(content2)
-    merged_inner = pd.merge(left=content1,right=content2, left_on='id', right_on='id')
+    merged_inner = pd.merge(left=c1,right=c2, left_on='id', right_on='id')
     logging.info("Merging complete")
     return merged_inner.to_json(orient='records')
 
