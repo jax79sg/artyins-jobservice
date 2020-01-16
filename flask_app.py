@@ -51,7 +51,7 @@ def inferContent(data):
     #Input: {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
     r = requests.post(url = config.INFERENCE_URL, json  = data)
     results = r.json()
-    logging.info("Inference call completed")
+    logging.info("Inference call completed with results %s", results)
     return results['results']
   
 def saveContent(data):
@@ -62,7 +62,7 @@ def saveContent(data):
        data=json.loads(data)
     r = requests.post(url = config.SAVE_URL, json  = data)
     results = r.json()
-    logging.info("Saving completed")
+    logging.info("Saving completed with results %s ", results)
     return results['results']
  
 def mergejson(content1, content2):
