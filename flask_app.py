@@ -136,7 +136,6 @@ def create_job_get():
 
 @app.route('/test',methods=['GET'])
 def test_get():
-    logging.info("Running health test for jobservice")
     response = {
         'message':'ok'
     }
