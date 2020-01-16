@@ -22,7 +22,7 @@ ROOT_DIR = os.path.abspath("../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 
 # Logging confg
-logging.basicConfig(level=logging.DEBUG,handlers=[
+logging.basicConfig(level=config.LOGLEVEL,handlers=[
         logging.FileHandler("{0}/{1}.log".format("/logs", "jobsvc-flaskapp")),
         logging.StreamHandler()
     ] ,
@@ -89,30 +89,34 @@ def mergejson(content1, content2):
     return merged_inner.to_json(orient='records')
 
 def run_create_new_job(data):
-    logging.info("Starting job run")
-    logging.debug('Loading data: %s', data)
-    #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
-    extractedContent=extractContent(data)
-    #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
+    results="ok"
+    try:
+       logging.info("Starting job run")
+       logging.debug('Loading data: %s', data)
+       #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
+       extractedContent=extractContent(data)
+       #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
     
-    #eats [{"id":1,"content":"adfsfswjhrafkf"},{"id":2,"content":"kfsdfjsfsjhsd"}]
-    inferredContent=inferContent(extractedContent)
-    #vomits {"results":[{"id":1,"class":"DOCTRINE"},{"id":2,"class":"DOCTRINE"}]}
+       #eats [{"id":1,"content":"adfsfswjhrafkf"},{"id":2,"content":"kfsdfjsfsjhsd"}]
+       inferredContent=inferContent(extractedContent)
+       #vomits {"results":[{"id":1,"class":"DOCTRINE"},{"id":2,"class":"DOCTRINE"}]}
 
-    mergedresult=mergejson(extractedContent,inferredContent)
-    #vomits [{"filename":"file01.pdf","id":1,"class":"DOCTRINE","section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"class":"DOCTRINE","section":"observation","content":"kfsdfjsfsjhsd"}]}    
+       mergedresult=mergejson(extractedContent,inferredContent)
+       #vomits [{"filename":"file01.pdf","id":1,"class":"DOCTRINE","section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"class":"DOCTRINE","section":"observation","content":"kfsdfjsfsjhsd"}]}    
 
-    #eats above vomit
-    savedContent=saveContent(mergedresult)
-    #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
-    #If vomit is "ok", then no probles.
+       #eats above vomit
+       savedContent=saveContent(mergedresult)
+       #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
+       #If vomit is "ok", then no probles.
 
-    #For those that fail, do 
-    # Extract the report filenames that failed, send failed to monitor service who will move filename from processing to failed.
-    # Extract the report filenames that passes, send passed to monitor service who will move filename from processing to succeed
+       #For those that fail, do 
+       # Extract the report filenames that failed, send failed to monitor service who will move filename from processing to failed.
+       # Extract the report filenames that passes, send passed to monitor service who will move filename from processing to succeed
+    except Exception, e:
+       logging.error(str(e))
+       results="nok"
     
-    
-    return "ok"
+    return results
 
 # Instantiate the Node
 app = Flask(__name__)
