@@ -22,7 +22,7 @@ ROOT_DIR = os.path.abspath("../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 
 # Logging confg
-logging.basicConfig(level=config.LOGLEVEL,handlers=[
+logging.basicConfig(level=config.LOGGINGLEVEL,handlers=[
         logging.FileHandler("{0}/{1}.log".format("/logs", "jobsvc-flaskapp")),
         logging.StreamHandler()
     ] ,
