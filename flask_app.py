@@ -104,6 +104,8 @@ def run_create_new_job(data):
        #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
        #If vomit is "ok", then no probles.
 
+       if len(savedContent["failreports")>0:
+          results="nok"
        #For those that fail, do 
        # Extract the report filenames that failed, send failed to monitor service who will move filename from processing to failed.
        # Extract the report filenames that passes, send passed to monitor service who will move filename from processing to succeed
