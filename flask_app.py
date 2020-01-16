@@ -16,11 +16,12 @@ from uuid import uuid4
 import requests
 from flask import Flask, jsonify, request
 import requests
-
+from config import JobConfig
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 
+config = JobConfig()
 # Logging confg
 logging.basicConfig(level=config.LOGGINGLEVEL,handlers=[
         logging.FileHandler("{0}/{1}.log".format("/logs", "jobsvc-flaskapp")),
@@ -28,12 +29,6 @@ logging.basicConfig(level=config.LOGGINGLEVEL,handlers=[
     ] ,
                 format="%(asctime)-15s %(levelname)-8s %(message)s")
 
-############################################################
-#  Configurations
-#  Inherits from config.py
-############################################################
-from config import JobConfig
-config = JobConfig()
 
 # Create model object in inference mode.
 
