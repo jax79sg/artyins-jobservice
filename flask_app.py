@@ -112,7 +112,7 @@ def run_create_new_job(data):
        #For those that fail, do 
        # Extract the report filenames that failed, send failed to monitor service who will move filename from processing to failed.
        # Extract the report filenames that passes, send passed to monitor service who will move filename from processing to succeed
-    except Exception, e:
+    except Exception as  e:
        logging.error(str(e))
        results="nok"
     
