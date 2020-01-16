@@ -1,0 +1,14 @@
+
+version: '2.1'
+services:
+
+  jobsvc:
+    image: artyins-jobservice
+    restart: always
+    volumes:
+    - ./logs:/logs
+    - ./config:/config
+    healthcheck:
+      test: wget --spider --quiet http://localhost:9891/test
+    ports:
+      - "9891:9891"
