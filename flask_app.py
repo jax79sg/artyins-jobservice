@@ -103,7 +103,7 @@ def run_create_new_job(data):
        savedContent=saveContent(mergedresult)
        #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
        #If vomit is "ok", then no probles.
-       
+       savedContent=json.loads(savedContent)
        logging.info("Failed reports count $s, details  %s",savedContent["failreports"], len(savedContent["failreports"]))
        if len(savedContent["failreports"])>0:
           results="nok"
