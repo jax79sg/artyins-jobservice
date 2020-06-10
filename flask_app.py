@@ -37,7 +37,7 @@ def extractContent(data):
     filelist=[]
     idcount=1
     for row in data:
-       logging.info("ROW is {} with type {}".format(row, type(row)))
+       #logging.info("ROW is {} with type {}".format(row, type(row)))
        filelist.append({"filename":row["filename"],"id":idcount})
        idcount=idcount+1
     r = requests.post(url = config.EXTRACTION_URL, json  = filelist)
