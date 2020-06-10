@@ -62,15 +62,15 @@ def saveContent(data):
        data=json.loads(data)
     r = requests.post(url = config.SAVE_URL, json  = data)
     results = r.json()
-    logging.info("Saving call completed ", results)
+    logging.info("Saving call completed ")
     return results['results']
  
 def mergejson(content1, content2):
     from pandas.io.json import json_normalize
     import pandas as pd
     logging.info("Merging results from Extraction and Inference")
-    logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
-    logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
+    #logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
+    #logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
     if isinstance(content1,str):
         logging.warn("Received content is not JSON obj, manually converting")
         content1 = json.loads(content1)
