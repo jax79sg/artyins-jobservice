@@ -47,22 +47,22 @@ def extractContent(data):
 
 def inferContent(data):
     logging.info("Preparing request for inference")
-    logging.debug("DATA %s  TYPE %s", data, type(data))
+    #logging.debug("DATA %s  TYPE %s", data, type(data))
     #Input: {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
     r = requests.post(url = config.INFERENCE_URL, json  = data)
     results = r.json()
-    logging.info("Inference call completed with results %s", results)
+    logging.info("Inference call completed")
     return results['results']
   
 def saveContent(data):
     logging.info("Preparing request for saving")
-    logging.debug("DATA %s TYPE %s",data, type(data))
+    #logging.debug("DATA %s TYPE %s",data, type(data))
     if isinstance(data, str):
        logging.debug("data is not json dict, manually converting now")
        data=json.loads(data)
     r = requests.post(url = config.SAVE_URL, json  = data)
     results = r.json()
-    logging.info("Saving completed with results %s ", results)
+    logging.info("Saving call completed ", results)
     return results['results']
  
 def mergejson(content1, content2):
@@ -80,14 +80,15 @@ def mergejson(content1, content2):
     c1=json_normalize(content1)
     c2=json_normalize(content2)
     merged_inner = pd.merge(left=c1,right=c2, left_on='id', right_on='id')
-    logging.info("Merging complete %s",merged_inner.to_json(orient='records'))
+    logging.info("Merging completed")
+    #logging.info("Merging complete %s",merged_inner.to_json(orient='records'))
     return merged_inner.to_json(orient='records')
 
 def run_create_new_job(data):
     results="ok"
     try:
        logging.info("Starting job run")
-       logging.debug('Loading data: %s', data)
+       #logging.debug('Loading data: %s', data)
        #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
        extractedContent=extractContent(data)
        #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
