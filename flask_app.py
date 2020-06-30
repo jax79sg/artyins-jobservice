@@ -69,8 +69,8 @@ def mergejson(content1, content2):
     from pandas.io.json import json_normalize
     import pandas as pd
     logging.info("Merging results from Extraction and Inference")
-    #logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
-    #logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
+    logging.debug("Extracted: %s with TYPE %s", content1, type(content1))
+    logging.debug("Inferred: %s with TYPE %s", content2, type(content2))
     if isinstance(content1,str):
         logging.warn("Received content is not JSON obj, manually converting")
         content1 = json.loads(content1)
@@ -88,20 +88,22 @@ def run_create_new_job(data):
     results="ok"
     try:
        logging.info("Starting job run")
-       #logging.debug('Loading data: %s', data)
+       logging.debug('Loading data: %s', data)
        #eats [{"filename":"file01.pdf",},{"filename":"file02.pdf"}]
        extractedContent=extractContent(data)
        #vomits {"results":[{"filename":"file01.pdf","id":1,"section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"section":"observation","content":"kfsdfjsfsjhsd"}]}
-    
+       logging.debug("extraction vomitted: %s",str(extractedContent))
        #eats [{"id":1,"content":"adfsfswjhrafkf"},{"id":2,"content":"kfsdfjsfsjhsd"}]
        inferredContent=inferContent(extractedContent)
+       logging.debug("Inference vomitted: %s",str(inferredContent))
        #vomits {"results":[{"id":1,"class":"DOCTRINE"},{"id":2,"class":"DOCTRINE"}]}
 
        mergedresult=mergejson(extractedContent,inferredContent)
        #vomits [{"filename":"file01.pdf","id":1,"class":"DOCTRINE","section":"observation","content":"adfsfswjhrafkf"},{"filename":"file02.pdf","id":2,"class":"DOCTRINE","section":"observation","content":"kfsdfjsfsjhsd"}]}    
-
+       logging.debug("merge vomitted: %s", str(mergedresult))
        #eats above vomit
        savedContent=saveContent(mergedresult)
+       logging.debug("save vomitted: %s", str(savedContent))
        #vomits failed products [{"filename":"file01.pdf","id":1,"error":"report already exists"},{"filename":"file01.pdf","id":2,"results":"Some SQL problems, check logs"}]
        #If vomit is "ok", then no probles.
        savedContent=json.loads(savedContent)
